@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "Home",
+    "approach": "Our Approach",
+    "project": "Project",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Stories That\nPull You In.",
+    "desc": "We are a video planning and production studio\nthat transforms public-interest stories\ninto compelling, immersive content for wide audiences.",
+    "cta": "View Our Approach",
+    "scroll": "Scroll"
+  },
+  "home": {
+    "selectedWorks": "Selected Works",
+    "viewAllProjects": "View All Projects",
+    "discover": "Discover",
+    "newsUpdate": "News Update",
+    "viewAllNews": "View All News"
+  },
+  "approach": {
+    "title": "Our\nApproach."
+  },
+  "project": {
+    "title": "Selected\nProjects.",
+    "subtitle": "A collection of immersive narratives",
+    "info": "Info",
+    "closeProject": "Close Project",
+    "details": "Details",
+    "backToProjects": "Back to Projects"
+  },
+  "contact": {
+    "title": "Let's\nTalk.",
+    "email": "Email",
+    "address": "Address",
+    "addressText": "57-5, Yangsan-ro, \nYeongdeungpo-gu, \nSeoul, Korea"
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  }
+}

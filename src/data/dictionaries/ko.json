@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "home": "홈",
+    "approach": "핵심 역량",
+    "project": "프로젝트",
+    "contact": "연락처"
+  },
+  "hero": {
+    "title": "끌어당기는\n이야기.",
+    "desc": "우리는 공익적 이야기를\n누구나 몰입할 수 있는 콘텐츠로 전환하는\n영상 기획 및 제작 스튜디오입니다.",
+    "cta": "핵심 역량 보기",
+    "scroll": "스크롤"
+  },
+  "home": {
+    "selectedWorks": "주요 프로젝트",
+    "viewAllProjects": "전체 프로젝트 보기",
+    "discover": "자세히 보기",
+    "newsUpdate": "새로운 소식",
+    "viewAllNews": "전체 소식 보기"
+  },
+  "approach": {
+    "title": "Our\nApproach."
+  },
+  "project": {
+    "title": "Selected\nProjects.",
+    "subtitle": "몰입형 내러티브 컬렉션",
+    "info": "정보",
+    "closeProject": "프로젝트 닫기",
+    "details": "상세 정보",
+    "backToProjects": "프로젝트 목록으로"
+  },
+  "contact": {
+    "title": "Let's\nTalk.",
+    "email": "이메일",
+    "address": "주소",
+    "addressText": "서울특별시 영등포구\n양산로 57-5"
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  }
+}
