@@ -94,7 +94,7 @@ export const projectsData: Project[] = [
       ko: "일본을 충격에 빠뜨린 14세 연쇄 살인범 아즈마 신이치로. 건축가 요코야마 아키토는 그를 괴물로 만든 환경으로 '위험한 집 구조'를 지목한다. 정말로 흉악 범죄자들의 집에는 공통적인 공간 결함이 있을까? <공간의 배신: 살인자의 방>은 공간이 인간의 감정, 인지, 스트레스 반응에 어떤 영향을 미치는지 연구하는 신경건축학의 렌즈를 통해 이 도발적인 가설을 따라간다.",
     },
     posterImage: '/images/posters/betrayal-of-space.png',
-    bannerImage: '/images/banners/the-sent-banner.jpg', // reusing as no unique banner
+    bannerImage: '/images/posters/betrayal-of-space.png',
   },
   {
     id: 6,
