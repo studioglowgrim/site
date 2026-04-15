@@ -31,6 +31,20 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     alternateLocale: 'ko_KR',
+    images: [
+      {
+        url: '/images/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'STUDIO GLOWGRIM — Stories That Pull You In',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'STUDIO GLOWGRIM',
+    description: 'Stories That Pull You In.',
+    images: ['/images/og-image.png'],
   },
 };
 
