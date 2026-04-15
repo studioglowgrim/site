@@ -7,6 +7,7 @@ import { useThemeStore } from '@/store/useThemeStore';
 import LenisProvider from '@/components/providers/LenisProvider';
 import Navbar from '@/components/common/Navbar';
 import Footer from '@/components/common/Footer';
+import PageTransition from '@/components/common/PageTransition';
 
 function ThemeInitializer({ children }: { children: React.ReactNode }) {
   const { isDark, setDark } = useThemeStore();
@@ -48,7 +49,9 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <LenisProvider>
       <Navbar />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1">
+        <PageTransition>{children}</PageTransition>
+      </main>
       <Footer />
     </LenisProvider>
   );
