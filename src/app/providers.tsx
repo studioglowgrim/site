@@ -33,11 +33,10 @@ function ThemeInitializer({ children }: { children: React.ReactNode }) {
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const isHome = pathname === '/';
 
-  // Pages that use FullPageScroll — they manage their own scroll container and footer
-  const isFullPage = pathname === '/' || pathname === '/approach' || pathname === '/project';
-
-  if (isFullPage) {
+  // Home page manages its own scroll container
+  if (isHome) {
     return (
       <>
         <Navbar />
