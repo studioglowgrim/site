@@ -8,6 +8,7 @@ export interface Project {
   desc: { en: string; ko: string };
   posterImage: string;
   bannerImage: string;
+  trailerUrl?: string;
 }
 
 export const projectsData: Project[] = [
@@ -27,6 +28,7 @@ export const projectsData: Project[] = [
     },
     posterImage: '/images/posters/the-sent.png',
     bannerImage: '/images/banners/the-sent-banner.jpg',
+    trailerUrl: 'https://youtu.be/CHqywKMME0A',
   },
   {
     id: 2,
@@ -61,6 +63,7 @@ export const projectsData: Project[] = [
     },
     posterImage: '/images/posters/monster-space.jpg',
     bannerImage: '/images/banners/monster-space-banner.png',
+    trailerUrl: 'https://youtu.be/7XNDvlWdc68',
   },
   {
     id: 4,
@@ -95,6 +98,7 @@ export const projectsData: Project[] = [
     },
     posterImage: '/images/posters/betrayal-of-space.png',
     bannerImage: '/images/posters/betrayal-of-space.png',
+    trailerUrl: 'https://youtu.be/0m0oPzTTNsc',
   },
   {
     id: 6,

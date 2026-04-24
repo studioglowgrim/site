@@ -3,14 +3,25 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { X, Play } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 import { useThemeStore } from '@/store/useThemeStore';
 import { useI18n } from '@/i18n/provider';
 import type { Project } from '@/data/projects';
 
+function getYouTubeId(url: string): string | null {
+  const match = url.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?/]+)/
+  );
+  return match ? match[1] : null;
+}
+
 export default function ProjectDetail({ project }: { project: Project }) {
   const isDark = useThemeStore((s) => s.isDark);
   const { t, locale } = useI18n();
+  const [showTrailer, setShowTrailer] = useState(false);
+
+  const youtubeId = project.trailerUrl ? getYouTubeId(project.trailerUrl) : null;
 
   return (
     <motion.div
@@ -34,19 +45,45 @@ export default function ProjectDetail({ project }: { project: Project }) {
           isDark ? 'bg-neutral-900' : 'bg-neutral-200'
         }`}
       >
-        <Image
-          src={project.bannerImage}
-          alt={project.title[locale]}
-          fill
-          className="object-cover opacity-60"
-          sizes="100vw"
-          priority
-        />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-20 h-20 rounded-full border border-white/30 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300 cursor-pointer">
-            <Play className="ml-1" size={32} fill="currentColor" />
+        {showTrailer && youtubeId ? (
+          <div className="absolute inset-0 z-10">
+            <iframe
+              src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0`}
+              title={project.title[locale]}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full"
+              style={{ border: 0 }}
+            />
+            <button
+              onClick={() => setShowTrailer(false)}
+              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300"
+            >
+              <X size={20} />
+            </button>
           </div>
-        </div>
+        ) : (
+          <>
+            <Image
+              src={project.bannerImage}
+              alt={project.title[locale]}
+              fill
+              className="object-cover opacity-60"
+              sizes="100vw"
+              priority
+            />
+            {youtubeId && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <button
+                  onClick={() => setShowTrailer(true)}
+                  className="w-20 h-20 rounded-full border border-white/30 backdrop-blur-md flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300 cursor-pointer"
+                >
+                  <Play className="ml-1" size={32} fill="currentColor" />
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-16">

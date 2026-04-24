@@ -23,7 +23,7 @@ export default function HomePage() {
     <div
       className="fixed inset-0 overflow-y-auto hide-scrollbar"
       style={{
-        scrollSnapType: 'y mandatory',
+        scrollSnapType: 'y proximity',
         scrollBehavior: 'smooth',
       }}
     >
