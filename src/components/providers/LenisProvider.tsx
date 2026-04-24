@@ -1,38 +1,71 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import Lenis from '@studio-freight/lenis';
+import { useEffect, useRef, useCallback } from 'react';
 
+/**
+ * Custom smooth scroll provider that intercepts wheel events
+ * and applies eased, butter-smooth scrolling across all pages.
+ */
 export default function LenisProvider({ children }: { children: React.ReactNode }) {
-  const lenisRef = useRef<Lenis | null>(null);
+  const targetScroll = useRef(0);
+  const currentScroll = useRef(0);
   const rafRef = useRef<number | null>(null);
+  const isAnimating = useRef(false);
 
-  useEffect(() => {
-    // Initialize Lenis for smooth scrolling
-    const lenis = new Lenis({
-      duration: 0.8,
-      easing: (t: number) => 1 - Math.pow(1 - t, 4),
-      smoothWheel: true,
-    });
+  const ease = 0.12; // Lower = smoother/slower, higher = snappier
 
-    lenisRef.current = lenis;
+  const animate = useCallback(() => {
+    const diff = targetScroll.current - currentScroll.current;
 
-    function raf(time: number) {
-      lenis.raf(time);
-      rafRef.current = requestAnimationFrame(raf);
+    if (Math.abs(diff) < 0.5) {
+      currentScroll.current = targetScroll.current;
+      window.scrollTo(0, currentScroll.current);
+      isAnimating.current = false;
+      rafRef.current = null;
+      return;
     }
 
-    rafRef.current = requestAnimationFrame(raf);
+    currentScroll.current += diff * ease;
+    window.scrollTo(0, currentScroll.current);
+    rafRef.current = requestAnimationFrame(animate);
+  }, []);
 
-    return () => {
-      lenis.destroy();
-      lenisRef.current = null;
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
+  useEffect(() => {
+    // Sync initial scroll position
+    currentScroll.current = window.scrollY;
+    targetScroll.current = window.scrollY;
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      targetScroll.current = Math.max(0, Math.min(maxScroll, targetScroll.current + e.deltaY));
+
+      if (!isAnimating.current) {
+        isAnimating.current = true;
+        rafRef.current = requestAnimationFrame(animate);
       }
     };
-  }, []);
+
+    // Sync on native scroll (e.g. keyboard, scrollbar drag)
+    const handleScroll = () => {
+      if (!isAnimating.current) {
+        currentScroll.current = window.scrollY;
+        targetScroll.current = window.scrollY;
+      }
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('scroll', handleScroll);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, [animate]);
 
   return <>{children}</>;
 }
