@@ -83,29 +83,8 @@ export default function ProjectGrid() {
               </div>
 
               <div className="flex flex-col space-y-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h2
-                      className={`text-2xl sm:text-3xl md:text-4xl font-serif leading-tight transition-colors ${
-                        isDark ? 'text-white' : 'text-black'
-                      }`}
-                    >
-                      {project.title[locale]}
-                    </h2>
-                    {project.subtitle[locale] && (
-                      <h3
-                        className={`text-base sm:text-xl mt-1 font-serif italic transition-colors ${
-                          isDark ? 'text-neutral-400' : 'text-neutral-600'
-                        }`}
-                      >
-                        {project.subtitle[locale]}
-                      </h3>
-                    )}
-                  </div>
-                </div>
-
                 <div
-                  className={`h-[1px] w-full my-4 transition-colors ${
+                  className={`h-[1px] w-full transition-colors ${
                     isDark ? 'bg-neutral-800' : 'bg-neutral-200'
                   }`}
                 />
