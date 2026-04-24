@@ -138,15 +138,16 @@ export default function ProjectSlider() {
             className="project-card snap-center shrink-0 w-[70vw] sm:w-[75vw] md:w-[500px] lg:w-[600px] group cursor-pointer"
           >
             <div
-              className={`relative aspect-[3/4] overflow-hidden mb-4 sm:mb-6 transition-colors ${
+              className={`relative overflow-hidden mb-4 sm:mb-6 transition-colors ${
                 isDark ? 'bg-neutral-900' : 'bg-neutral-200'
               }`}
             >
               <Image
                 src={project.posterImage}
                 alt={project.title[locale]}
-                fill
-                className="object-contain transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                width={600}
+                height={800}
+                className="w-full h-auto transform group-hover:scale-105 transition-transform duration-700 ease-out"
                 sizes="(max-width: 640px) 70vw, (max-width: 768px) 75vw, 600px"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6 sm:p-8">
