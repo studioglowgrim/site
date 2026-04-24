@@ -135,20 +135,19 @@ export default function ProjectSlider() {
           <Link
             key={project.id}
             href={`/project/${project.slug}`}
-            className="project-card snap-center shrink-0 w-[70vw] sm:w-[75vw] md:w-[500px] lg:w-[600px] group cursor-pointer"
+            className="project-card snap-center shrink-0 w-[55vw] sm:w-[50vw] md:w-[320px] lg:w-[380px] group cursor-pointer"
           >
             <div
-              className={`relative overflow-hidden mb-4 sm:mb-6 transition-colors ${
+              className={`relative aspect-[2/3] overflow-hidden mb-4 sm:mb-6 transition-colors ${
                 isDark ? 'bg-neutral-900' : 'bg-neutral-200'
               }`}
             >
               <Image
                 src={project.posterImage}
                 alt={project.title[locale]}
-                width={600}
-                height={800}
-                className="w-full h-auto transform group-hover:scale-105 transition-transform duration-700 ease-out"
-                sizes="(max-width: 640px) 70vw, (max-width: 768px) 75vw, 600px"
+                fill
+                className="object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                sizes="(max-width: 640px) 55vw, (max-width: 768px) 50vw, 380px"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6 sm:p-8">
                 <div className="flex items-center space-x-2 text-white">
