@@ -95,33 +95,22 @@ export default function ContactSection({ isPage = false }: { isPage?: boolean })
             isDark ? 'bg-neutral-900' : 'bg-neutral-200'
           }`}
         >
-          {process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY && process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY !== 'YOUR_API_KEY_HERE' ? (
-            <iframe
-              src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}&q=57-5+Yangsan-ro,+Yeongdeungpo-gu,+Seoul,+Korea&zoom=16`}
-              width="100%"
-              height="100%"
-              style={{
-                border: 0,
-                filter: isDark
-                  ? 'grayscale(100%) invert(90%) contrast(1.2)'
-                  : 'grayscale(100%) contrast(1.2)',
-                transition: 'filter 0.5s ease',
-              }}
-              allowFullScreen
-              loading="lazy"
-              title="Google Maps - Studio GLOWGRIM"
-              className="absolute inset-0 transition-transform duration-1000 group-hover:scale-105"
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center space-y-4">
-                <MapPin size={48} className={`mx-auto ${isDark ? 'text-neutral-700' : 'text-neutral-400'}`} />
-                <p className={`text-xs sm:text-sm uppercase tracking-widest ${isDark ? 'text-neutral-600' : 'text-neutral-400'}`}>
-                  57-5, Yangsan-ro, Yeongdeungpo-gu, Seoul
-                </p>
-              </div>
-            </div>
-          )}
+          <iframe
+            src="https://www.google.com/maps?q=57-5+Yangsan-ro,+Yeongdeungpo-gu,+Seoul,+Korea&output=embed"
+            width="100%"
+            height="100%"
+            style={{
+              border: 0,
+              filter: isDark
+                ? 'grayscale(100%) invert(90%) contrast(1.2)'
+                : 'grayscale(100%) contrast(1.2)',
+              transition: 'filter 0.5s ease',
+            }}
+            allowFullScreen
+            loading="lazy"
+            title="Google Maps - Studio GLOWGRIM"
+            className="absolute inset-0 transition-transform duration-1000 group-hover:scale-105"
+          />
           <div className="absolute inset-0 bg-black/10 pointer-events-none group-hover:bg-transparent transition-colors duration-500" />
         </div>
       </div>
