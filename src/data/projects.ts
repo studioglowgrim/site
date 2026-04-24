@@ -9,6 +9,7 @@ export interface Project {
   posterImage: string;
   bannerImage: string;
   trailerUrl?: string;
+  posterPosition?: string;
 }
 
 export const projectsData: Project[] = [
@@ -64,6 +65,7 @@ export const projectsData: Project[] = [
     posterImage: '/images/posters/monster-space.jpg',
     bannerImage: '/images/banners/monster-space-banner.png',
     trailerUrl: 'https://youtu.be/7XNDvlWdc68',
+    posterPosition: 'bottom',
   },
   {
     id: 4,
@@ -81,6 +83,7 @@ export const projectsData: Project[] = [
     },
     posterImage: '/images/posters/didigo-expedition.png',
     bannerImage: '/images/banners/didigo-banner.png',
+    posterPosition: 'bottom',
   },
   {
     id: 5,
