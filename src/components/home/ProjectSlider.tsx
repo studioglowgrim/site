@@ -149,7 +149,7 @@ export default function ProjectSlider() {
             className="project-card snap-center shrink-0 w-[55vw] sm:w-[50vw] md:w-[320px] lg:w-[380px] group cursor-pointer"
           >
             <div
-              className={`relative aspect-[2/3] overflow-hidden mb-4 sm:mb-6 transition-colors ${
+              className={`relative aspect-[2/3] max-h-[50vh] overflow-hidden mb-4 sm:mb-6 transition-colors ${
                 isDark ? 'bg-neutral-900' : 'bg-neutral-200'
               }`}
             >
