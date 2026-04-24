@@ -24,23 +24,34 @@ export default function ProjectSlider() {
     scrollRef.current?.scrollBy({ left: 400, behavior: 'smooth' });
   };
 
-  // Convert vertical wheel to horizontal scroll
+  // Convert vertical wheel to card-by-card horizontal snap
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
+
+    let lastScrollTime = 0;
+    const COOLDOWN = 600;
 
     const handleWheel = (e: WheelEvent) => {
       const maxScrollLeft = el.scrollWidth - el.clientWidth;
       const atStart = el.scrollLeft <= 0;
       const atEnd = el.scrollLeft >= maxScrollLeft - 1;
 
-      // If scrolling down and not at end, or scrolling up and not at start → horizontal scroll
       if ((e.deltaY > 0 && !atEnd) || (e.deltaY < 0 && !atStart)) {
         e.stopPropagation();
         e.preventDefault();
-        el.scrollBy({ left: e.deltaY * 2, behavior: 'auto' });
+
+        const now = Date.now();
+        if (now - lastScrollTime < COOLDOWN) return;
+        lastScrollTime = now;
+
+        // Snap one card width at a time
+        const card = el.querySelector('.project-card') as HTMLElement;
+        const cardWidth = card ? card.offsetWidth + 40 : 400; // card + gap
+        const direction = e.deltaY > 0 ? 1 : -1;
+
+        el.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
       }
-      // Otherwise let it bubble to FullPageScroll for section change
     };
 
     el.addEventListener('wheel', handleWheel, { passive: false });
