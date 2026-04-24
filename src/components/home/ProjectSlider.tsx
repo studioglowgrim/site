@@ -24,33 +24,36 @@ export default function ProjectSlider() {
     scrollRef.current?.scrollBy({ left: 400, behavior: 'smooth' });
   };
 
-  // Convert vertical wheel to card-by-card horizontal snap
+  // Convert vertical wheel to card-by-card horizontal snap (infinite forward loop)
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
 
     let lastScrollTime = 0;
-    const COOLDOWN = 600;
+    const COOLDOWN = 750;
 
     const handleWheel = (e: WheelEvent) => {
+      // Only handle forward scrolling (scroll down = next card)
+      if (e.deltaY <= 5) return;
+
+      e.stopPropagation();
+      e.preventDefault();
+
+      const now = Date.now();
+      if (now - lastScrollTime < COOLDOWN) return;
+      lastScrollTime = now;
+
       const maxScrollLeft = el.scrollWidth - el.clientWidth;
-      const atStart = el.scrollLeft <= 0;
-      const atEnd = el.scrollLeft >= maxScrollLeft - 1;
+      const atEnd = el.scrollLeft >= maxScrollLeft - 5;
 
-      if ((e.deltaY > 0 && !atEnd) || (e.deltaY < 0 && !atStart)) {
-        e.stopPropagation();
-        e.preventDefault();
-
-        const now = Date.now();
-        if (now - lastScrollTime < COOLDOWN) return;
-        lastScrollTime = now;
-
-        // Snap one card width at a time
+      if (atEnd) {
+        // Loop back to start
+        el.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        // Snap one card forward
         const card = el.querySelector('.project-card') as HTMLElement;
-        const cardWidth = card ? card.offsetWidth + 40 : 400; // card + gap
-        const direction = e.deltaY > 0 ? 1 : -1;
-
-        el.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
+        const cardWidth = card ? card.offsetWidth + 40 : 400;
+        el.scrollBy({ left: cardWidth, behavior: 'smooth' });
       }
     };
 
