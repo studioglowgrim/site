@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
@@ -23,6 +23,29 @@ export default function ProjectSlider() {
   const scrollRight = () => {
     scrollRef.current?.scrollBy({ left: 400, behavior: 'smooth' });
   };
+
+  // Convert vertical wheel to horizontal scroll
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      const maxScrollLeft = el.scrollWidth - el.clientWidth;
+      const atStart = el.scrollLeft <= 0;
+      const atEnd = el.scrollLeft >= maxScrollLeft - 1;
+
+      // If scrolling down and not at end, or scrolling up and not at start → horizontal scroll
+      if ((e.deltaY > 0 && !atEnd) || (e.deltaY < 0 && !atStart)) {
+        e.stopPropagation();
+        e.preventDefault();
+        el.scrollBy({ left: e.deltaY * 2, behavior: 'auto' });
+      }
+      // Otherwise let it bubble to FullPageScroll for section change
+    };
+
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
+  }, []);
 
   // GSAP entrance: title + cards stagger
   useEffect(() => {
