@@ -45,14 +45,15 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     );
   }
 
+  // All other pages use native browser scrolling
   return (
-    <LenisProvider>
+    <>
       <Navbar />
       <main className="flex-1">
         <PageTransition>{children}</PageTransition>
       </main>
       <Footer />
-    </LenisProvider>
+    </>
   );
 }
 
