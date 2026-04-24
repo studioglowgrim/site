@@ -34,7 +34,7 @@ export default function ProjectSlider() {
 
     const handleWheel = (e: WheelEvent) => {
       // Only handle forward scrolling (scroll down = next card)
-      if (e.deltaY <= 5) return;
+      if (e.deltaY <= 0) return;
 
       e.stopPropagation();
       e.preventDefault();
@@ -52,7 +52,7 @@ export default function ProjectSlider() {
       } else {
         // Snap one card forward
         const card = el.querySelector('.project-card') as HTMLElement;
-        const cardWidth = card ? card.offsetWidth + 40 : 400;
+        const cardWidth = card ? card.offsetWidth + 12 : 300; // card + gap-3 (12px)
         el.scrollBy({ left: cardWidth, behavior: 'smooth' });
       }
     };
@@ -143,7 +143,7 @@ export default function ProjectSlider() {
       {/* Cards */}
       <div
         ref={scrollRef}
-        className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-4 sm:gap-6 md:gap-10 pr-4 sm:pr-6 md:pr-12 pb-6 sm:pb-10"
+        className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-3 pr-4 sm:pr-6 md:pr-12 pb-6 sm:pb-10"
       >
         {projectsData.map((project) => (
           <Link
