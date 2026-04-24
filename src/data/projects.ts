@@ -47,6 +47,7 @@ export const projectsData: Project[] = [
     },
     posterImage: '/images/posters/fungi.png',
     bannerImage: '/images/banners/fungi-banner.png',
+    posterPosition: 'top',
   },
   {
     id: 3,
