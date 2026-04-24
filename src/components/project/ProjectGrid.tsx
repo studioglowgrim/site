@@ -62,6 +62,19 @@ export default function ProjectGrid() {
                   className="object-cover transform group-hover:scale-105 transition-transform duration-700 opacity-70 group-hover:opacity-100"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
+                {/* Title overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6">
+                  <h3 className="text-white text-lg sm:text-2xl md:text-3xl font-serif leading-tight drop-shadow-lg">
+                    {project.title[locale]}
+                  </h3>
+                  {project.subtitle[locale] && (
+                    <p className="text-white/70 text-xs sm:text-sm font-serif italic mt-1">
+                      {project.subtitle[locale]}
+                    </p>
+                  )}
+                </div>
+                {/* Play button on hover */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-16 h-16 rounded-full border border-white/30 backdrop-blur-sm flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform scale-50 group-hover:scale-100">
                     <Play className="ml-1" size={24} fill="currentColor" />
