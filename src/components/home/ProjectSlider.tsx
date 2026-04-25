@@ -138,11 +138,11 @@ export default function ProjectSlider() {
             key={project.id}
             href={`/project/${project.slug}`}
             className="project-card snap-start shrink-0 group cursor-pointer"
-            style={{ width: 'clamp(200px, 22vw, 280px)' }}
+            style={{ width: 'clamp(180px, 20vw, 260px)' }}
           >
             <div
               className="relative overflow-hidden rounded-sm"
-              style={{ aspectRatio: '2/3' }}
+              style={{ aspectRatio: '2/3', maxHeight: '55vh' }}
             >
               <Image
                 src={project.posterImage}
