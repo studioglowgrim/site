@@ -16,7 +16,7 @@ export const projectsData: Project[] = [
   {
     id: 1,
     slug: 'the-sent',
-    title: { en: 'THE SENT', ko: 'THE SENT' },
+    title: { en: 'THE SENT', ko: '사도' },
     subtitle: { en: 'A Pastor, A Perpetrator', ko: '목사, 그리고 가해자' },
     meta: { en: 'Documentary / 90 min / UHD', ko: '다큐멘터리 / 90분 / UHD' },
     headcopy: {
@@ -34,7 +34,7 @@ export const projectsData: Project[] = [
   {
     id: 2,
     slug: 'fungi',
-    title: { en: 'And Then There Were Fungi', ko: 'And Then There Were Fungi' },
+    title: { en: 'And Then There Were Fungi', ko: '그리고 곰팡이가 있었다' },
     subtitle: { en: '', ko: '' },
     meta: { en: 'Factual Series / 3 x 60 min / UHD', ko: '팩추얼 시리즈 / 3 x 60분 / UHD' },
     headcopy: {

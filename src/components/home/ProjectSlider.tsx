@@ -131,14 +131,13 @@ export default function ProjectSlider() {
       {/* Cards — horizontal scroll */}
       <div
         ref={scrollRef}
-        className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-6 pb-6"
+        className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-4 sm:gap-6 pb-6 px-[20vw] sm:px-0"
       >
         {projectsData.map((project) => (
           <Link
             key={project.id}
             href={`/project/${project.slug}`}
-            className="project-card snap-start shrink-0 group cursor-pointer"
-            style={{ width: 'clamp(180px, 20vw, 260px)' }}
+            className="project-card snap-center sm:snap-start shrink-0 group cursor-pointer w-[60vw] sm:w-[clamp(180px,20vw,260px)]"
           >
             <div
               className="relative overflow-hidden rounded-sm"

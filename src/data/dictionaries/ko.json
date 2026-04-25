@@ -1,12 +1,12 @@
 {
   "nav": {
-    "home": "홈",
-    "approach": "핵심 역량",
-    "project": "프로젝트",
-    "contact": "연락처"
+    "home": "Home",
+    "approach": "Our Approach",
+    "project": "Project",
+    "contact": "Contact"
   },
   "hero": {
-    "title": "끌어당기는\n이야기.",
+    "title": "Stories That\nPull You In.",
     "desc": "우리는 공익적 이야기를\n누구나 몰입할 수 있는 콘텐츠로 전환하는\n영상 기획 및 제작 스튜디오입니다.",
     "cta": "핵심 역량 보기",
     "scroll": "스크롤"
