@@ -134,7 +134,7 @@ export default function ProjectSlider() {
               style={{ width: 'clamp(200px, 22vw, 280px)' }}
             >
               <div
-                className="relative overflow-hidden rounded-sm transition-all duration-500 group-hover:ring-1 group-hover:ring-white/20"
+                className="relative overflow-hidden rounded-sm"
                 style={{ aspectRatio: '2/3' }}
               >
                 <Image
@@ -144,12 +144,17 @@ export default function ProjectSlider() {
                   className="object-cover transform group-hover:scale-[1.04] transition-transform duration-700 ease-out"
                   sizes="280px"
                 />
-                {/* Hover overlay with title */}
-                <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
-                <div className="absolute bottom-0 inset-x-0 p-3 sm:p-4 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-400">
-                  <p className="text-white text-xs sm:text-sm font-serif leading-snug">
+                {/* Hover: full overlay + centered title */}
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-3 group-hover:translate-y-0">
+                  <h3 className="text-white text-base sm:text-lg md:text-xl font-serif leading-tight drop-shadow-lg">
                     {project.title[locale]}
-                  </p>
+                  </h3>
+                  {project.subtitle[locale] && (
+                    <p className="text-white/60 text-[10px] sm:text-xs font-serif italic mt-2">
+                      {project.subtitle[locale]}
+                    </p>
+                  )}
                 </div>
               </div>
             </Link>
