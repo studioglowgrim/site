@@ -16,18 +16,24 @@ export default function ProjectSlider() {
   const sectionRef = useRef<HTMLElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const getCardWidth = () => {
+  const getCardStep = () => {
     const card = scrollRef.current?.querySelector('.project-card') as HTMLElement;
     return card ? card.offsetWidth + 16 : 260;
   };
 
-  const scrollToIndex = (index: number) => {
+  const scrollPrev = () => {
+    scrollRef.current?.scrollBy({ left: -getCardStep(), behavior: 'smooth' });
+  };
+
+  const scrollNext = () => {
     const el = scrollRef.current;
     if (!el) return;
-    const total = projectsData.length;
-    const target = ((index % total) + total) % total;
-    setActiveIndex(target);
-    el.scrollTo({ left: target * getCardWidth(), behavior: 'smooth' });
+    const maxScrollLeft = el.scrollWidth - el.clientWidth;
+    if (el.scrollLeft >= maxScrollLeft - 5) {
+      el.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      el.scrollBy({ left: getCardStep(), behavior: 'smooth' });
+    }
   };
 
   // Wheel → card-by-card snap
@@ -46,15 +52,12 @@ export default function ProjectSlider() {
       if (now - lastScrollTime < COOLDOWN) return;
       lastScrollTime = now;
 
-      setActiveIndex((prev) => {
-        const next = prev + 1;
-        if (next >= projectsData.length) {
-          el.scrollTo({ left: 0, behavior: 'smooth' });
-          return 0;
-        }
-        el.scrollTo({ left: next * getCardWidth(), behavior: 'smooth' });
-        return next;
-      });
+      const maxScrollLeft = el.scrollWidth - el.clientWidth;
+      if (el.scrollLeft >= maxScrollLeft - 5) {
+        el.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        el.scrollBy({ left: getCardStep(), behavior: 'smooth' });
+      }
     };
 
     el.addEventListener('wheel', handleWheel, { passive: false });
@@ -100,7 +103,7 @@ export default function ProjectSlider() {
           </Link>
           <div className="flex gap-1.5">
             <button
-              onClick={() => scrollToIndex(activeIndex - 1)}
+              onClick={scrollPrev}
               className={`w-7 h-7 border rounded-full flex items-center justify-center transition-all ${
                 isDark ? 'border-neutral-700 text-neutral-500 hover:bg-white hover:text-black hover:border-white' : 'border-neutral-300 text-neutral-400 hover:bg-black hover:text-white'
               }`}
@@ -109,7 +112,7 @@ export default function ProjectSlider() {
               <ChevronLeft size={12} />
             </button>
             <button
-              onClick={() => scrollToIndex(activeIndex + 1)}
+              onClick={scrollNext}
               className={`w-7 h-7 border rounded-full flex items-center justify-center transition-all ${
                 isDark ? 'border-neutral-700 text-neutral-500 hover:bg-white hover:text-black hover:border-white' : 'border-neutral-300 text-neutral-400 hover:bg-black hover:text-white'
               }`}
@@ -144,14 +147,14 @@ export default function ProjectSlider() {
                   className="object-cover transform group-hover:scale-[1.04] transition-transform duration-700 ease-out"
                   sizes="280px"
                 />
-                {/* Hover: full overlay + centered title */}
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-3 group-hover:translate-y-0">
-                  <h3 className="text-white text-base sm:text-lg md:text-xl font-serif leading-tight drop-shadow-lg">
+                {/* Hover: bottom gradient + title (matches project page) */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute bottom-0 inset-x-0 p-3 sm:p-4 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                  <h3 className="text-white text-sm sm:text-base font-serif leading-tight drop-shadow-lg">
                     {project.title[locale]}
                   </h3>
                   {project.subtitle[locale] && (
-                    <p className="text-white/60 text-[10px] sm:text-xs font-serif italic mt-2">
+                    <p className="text-white/60 text-[10px] font-serif italic mt-1">
                       {project.subtitle[locale]}
                     </p>
                   )}
