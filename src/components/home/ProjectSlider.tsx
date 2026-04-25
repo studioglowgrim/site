@@ -73,24 +73,30 @@ export default function ProjectSlider() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="h-full flex flex-col">
-      {/* Header — below navbar with breathing room */}
-      <div className="slider-header flex justify-between items-center px-4 sm:px-6 md:px-12 pt-20 sm:pt-24 pb-4 sm:pb-6">
+    <section
+      ref={sectionRef}
+      className={`h-full flex flex-col justify-center py-10 sm:py-20 px-4 sm:px-6 md:px-12 max-w-screen-2xl mx-auto w-full transition-colors ${
+        isDark ? 'border-neutral-900' : 'border-neutral-200'
+      }`}
+    >
+      <div className="slider-header flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 sm:mb-16">
         <h2
-          className={`text-lg sm:text-xl md:text-2xl font-serif tracking-tight transition-colors ${
+          className={`text-2xl sm:text-3xl md:text-5xl font-serif transition-colors ${
             isDark ? 'text-white' : 'text-black'
           }`}
         >
           {t.home.selectedWorks}
         </h2>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4 mt-4 sm:mt-0">
           <Link
             href="/project"
-            className={`hidden sm:inline text-[10px] uppercase tracking-[0.2em] transition-colors ${
-              isDark ? 'text-neutral-500 hover:text-white' : 'text-neutral-400 hover:text-black'
+            className={`hidden sm:inline text-xs sm:text-sm uppercase tracking-widest border-b pb-1 transition-colors ${
+              isDark
+                ? 'border-neutral-600 hover:text-white hover:border-white'
+                : 'border-neutral-400 hover:text-black hover:border-black'
             }`}
           >
-            {t.home.viewAllProjects} →
+            {t.home.viewAllProjects}
           </Link>
           <div className="flex gap-1.5">
             <button
@@ -115,13 +121,11 @@ export default function ProjectSlider() {
         </div>
       </div>
 
-      {/* Cards — centered vertically, constrained height */}
-      <div className="flex-1 flex items-center px-4 sm:px-6 md:px-12 pb-6 sm:pb-10 min-h-0">
-        <div
-          ref={scrollRef}
-          className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-4 w-full"
-          style={{ maxHeight: '60vh' }}
-        >
+      {/* Cards */}
+      <div
+        ref={scrollRef}
+        className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-4 sm:gap-6 pb-6"
+      >
           {projectsData.map((project, i) => (
             <Link
               key={project.id}
@@ -153,26 +157,14 @@ export default function ProjectSlider() {
         </div>
       </div>
 
-      {/* Bottom dots + mobile link */}
-      <div className="flex justify-center items-center gap-4 pb-4 sm:pb-6">
-        <div className="flex items-center gap-1.5">
-          {projectsData.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => scrollToIndex(i)}
-              className={`rounded-full transition-all duration-300 ${
-                activeIndex === i
-                  ? `w-4 h-1 ${isDark ? 'bg-white' : 'bg-black'}`
-                  : `w-1 h-1 ${isDark ? 'bg-neutral-700 hover:bg-neutral-500' : 'bg-neutral-300 hover:bg-neutral-500'}`
-              }`}
-              aria-label={`Poster ${i + 1}`}
-            />
-          ))}
-        </div>
+      {/* Mobile: View All */}
+      <div className="sm:hidden flex justify-center mt-4">
         <Link
           href="/project"
-          className={`sm:hidden text-[9px] uppercase tracking-[0.2em] transition-colors ${
-            isDark ? 'text-neutral-600 hover:text-white' : 'text-neutral-400 hover:text-black'
+          className={`text-xs uppercase tracking-widest border-b pb-1 transition-colors ${
+            isDark
+              ? 'border-neutral-600 text-neutral-400 hover:text-white'
+              : 'border-neutral-400 text-neutral-500 hover:text-black'
           }`}
         >
           {t.home.viewAllProjects}
