@@ -154,7 +154,6 @@ export default function ProjectSlider() {
               </div>
             </Link>
           ))}
-        </div>
       </div>
 
       {/* Mobile: View All */}
