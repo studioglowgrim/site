@@ -11,7 +11,7 @@ export const newsData: NewsItem[] = [
   {
     id: 1,
     tag: { en: 'FAR EAST FILM FESTIVAL', ko: '극동영화제' },
-    title: { en: '<The Sent: A PASTOR, A MURDERER>', ko: '<THE SENT: 목사, 그리고 가해자>' },
+    title: { en: '<The Sent: A PASTOR, A MURDERER>', ko: '<사도: 목사, 그리고 가해자>' },
     desc: {
       en: 'Screening to be held at the Udine Far East Film Festival. April 29, 2026 / Cinema Visionario Sala Ferroviario',
       ko: '우디네 극동영화제 공식 상영 일정 확정. 2026년 4월 29일 / 시네마 비전',
@@ -22,7 +22,7 @@ export const newsData: NewsItem[] = [
   {
     id: 2,
     tag: { en: 'NEW RELEASE', ko: '신규 공개' },
-    title: { en: 'And Then There Were Fungi', ko: 'And Then There Were Fungi' },
+    title: { en: 'And Then There Were Fungi', ko: '그리고 곰팡이가 있었다' },
     desc: {
       en: 'Medical factual series premiering on global streaming platforms this fall. A deep dive into the hidden world.',
       ko: '올가을 글로벌 스트리밍 플랫폼을 통해 메디컬 팩추얼 시리즈가 공개될 예정입니다. 숨겨진 세계로의 탐구.',
