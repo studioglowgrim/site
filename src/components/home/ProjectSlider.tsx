@@ -75,7 +75,7 @@ export default function ProjectSlider() {
   return (
     <section
       ref={sectionRef}
-      className={`h-full flex flex-col justify-center py-10 sm:py-20 px-4 sm:px-6 md:px-12 max-w-screen-2xl mx-auto w-full transition-colors ${
+      className={`h-full flex flex-col py-10 sm:py-20 px-4 sm:px-6 md:px-12 max-w-screen-2xl mx-auto w-full transition-colors ${
         isDark ? 'border-neutral-900' : 'border-neutral-200'
       }`}
     >
