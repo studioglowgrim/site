@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -14,11 +14,10 @@ export default function ProjectSlider() {
   const { t, locale } = useI18n();
   const scrollRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
 
   const getCardStep = () => {
     const card = scrollRef.current?.querySelector('.project-card') as HTMLElement;
-    return card ? card.offsetWidth + 16 : 260;
+    return card ? card.offsetWidth + 24 : 260; // card + gap-6
   };
 
   const scrollPrev = () => {
@@ -78,10 +77,11 @@ export default function ProjectSlider() {
   return (
     <section
       ref={sectionRef}
-      className={`h-full flex flex-col py-10 sm:py-20 px-4 sm:px-6 md:px-12 max-w-screen-2xl mx-auto w-full transition-colors ${
+      className={`h-full flex flex-col justify-center py-10 sm:py-20 px-4 sm:px-6 md:px-12 max-w-screen-2xl mx-auto w-full transition-colors ${
         isDark ? 'border-neutral-900' : 'border-neutral-200'
       }`}
     >
+      {/* Header — same pattern as News Update */}
       <div className="slider-header flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 sm:mb-16">
         <h2
           className={`text-2xl sm:text-3xl md:text-5xl font-serif transition-colors ${
@@ -90,10 +90,10 @@ export default function ProjectSlider() {
         >
           {t.home.selectedWorks}
         </h2>
-        <div className="flex items-center gap-4 mt-4 sm:mt-0">
+        <div className="flex items-center gap-4 sm:gap-6 mt-4 sm:mt-0">
           <Link
             href="/project"
-            className={`hidden sm:inline text-xs sm:text-sm uppercase tracking-widest border-b pb-1 transition-colors ${
+            className={`text-xs sm:text-sm uppercase tracking-widest border-b pb-1 transition-colors ${
               isDark
                 ? 'border-neutral-600 hover:text-white hover:border-white'
                 : 'border-neutral-400 hover:text-black hover:border-black'
@@ -101,67 +101,71 @@ export default function ProjectSlider() {
           >
             {t.home.viewAllProjects}
           </Link>
-          <div className="flex gap-1.5">
+          <div className="flex gap-2">
             <button
               onClick={scrollPrev}
-              className={`w-7 h-7 border rounded-full flex items-center justify-center transition-all ${
-                isDark ? 'border-neutral-700 text-neutral-500 hover:bg-white hover:text-black hover:border-white' : 'border-neutral-300 text-neutral-400 hover:bg-black hover:text-white'
+              className={`w-10 h-10 sm:w-12 sm:h-12 border rounded-full flex items-center justify-center transition-colors ${
+                isDark
+                  ? 'border-neutral-800 hover:bg-white hover:text-black text-white'
+                  : 'border-neutral-300 hover:bg-black hover:text-white text-black'
               }`}
-              aria-label="Previous"
+              aria-label="Scroll left"
             >
-              <ChevronLeft size={12} />
+              <ChevronLeft size={18} />
             </button>
             <button
               onClick={scrollNext}
-              className={`w-7 h-7 border rounded-full flex items-center justify-center transition-all ${
-                isDark ? 'border-neutral-700 text-neutral-500 hover:bg-white hover:text-black hover:border-white' : 'border-neutral-300 text-neutral-400 hover:bg-black hover:text-white'
+              className={`w-10 h-10 sm:w-12 sm:h-12 border rounded-full flex items-center justify-center transition-colors ${
+                isDark
+                  ? 'border-neutral-800 hover:bg-white hover:text-black text-white'
+                  : 'border-neutral-300 hover:bg-black hover:text-white text-black'
               }`}
-              aria-label="Next"
+              aria-label="Scroll right"
             >
-              <ChevronRight size={12} />
+              <ChevronRight size={18} />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Cards */}
+      {/* Cards — horizontal scroll */}
       <div
         ref={scrollRef}
-        className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-4 sm:gap-6 pb-6"
+        className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-6 pb-6"
       >
-          {projectsData.map((project, i) => (
-            <Link
-              key={project.id}
-              href={`/project/${project.slug}`}
-              className="project-card snap-start shrink-0 group cursor-pointer"
-              style={{ width: 'clamp(200px, 22vw, 280px)' }}
+        {projectsData.map((project) => (
+          <Link
+            key={project.id}
+            href={`/project/${project.slug}`}
+            className="project-card snap-start shrink-0 group cursor-pointer"
+            style={{ width: 'clamp(200px, 22vw, 280px)' }}
+          >
+            <div
+              className="relative overflow-hidden rounded-sm"
+              style={{ aspectRatio: '2/3' }}
             >
-              <div
-                className="relative overflow-hidden rounded-sm"
-                style={{ aspectRatio: '2/3' }}
-              >
-                <Image
-                  src={project.posterImage}
-                  alt={project.title[locale]}
-                  fill
-                  className="object-cover transform group-hover:scale-[1.04] transition-transform duration-700 ease-out"
-                  sizes="280px"
-                />
-                {/* Hover: bottom gradient + title (matches project page) */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute bottom-0 inset-x-0 p-3 sm:p-4 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                  <h3 className="text-white text-sm sm:text-base font-serif leading-tight drop-shadow-lg">
-                    {project.title[locale]}
-                  </h3>
-                  {project.subtitle[locale] && (
-                    <p className="text-white/60 text-[10px] font-serif italic mt-1">
-                      {project.subtitle[locale]}
-                    </p>
-                  )}
-                </div>
+              <Image
+                src={project.posterImage}
+                alt={project.title[locale]}
+                fill
+                className="object-cover transform group-hover:scale-[1.04] transition-transform duration-700 ease-out"
+                sizes="280px"
+              />
+              {/* Hover: bottom gradient + title */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-0 inset-x-0 p-3 sm:p-4 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                <h3 className="text-white text-sm sm:text-base font-serif leading-tight drop-shadow-lg">
+                  {project.title[locale]}
+                </h3>
+                {project.subtitle[locale] && (
+                  <p className="text-white/60 text-[10px] font-serif italic mt-1">
+                    {project.subtitle[locale]}
+                  </p>
+                )}
               </div>
-            </Link>
-          ))}
+            </div>
+          </Link>
+        ))}
       </div>
 
       {/* Mobile: View All */}
