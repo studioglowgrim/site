@@ -17,9 +17,11 @@ export default function FullPageScroll({ children, showDots = true }: FullPageSc
   const [activeSection, setActiveSection] = useState(0);
   const sectionCount = children.length;
 
+  // Scroll to section using actual DOM element position (not calculated)
   const scrollToSection = useCallback((index: number) => {
     if (index < 0 || index >= sectionCount) return;
-    if (!containerRef.current) return;
+    const container = containerRef.current;
+    if (!container) return;
 
     const now = Date.now();
     if (now - lastScrollTime.current < SCROLL_COOLDOWN) return;
@@ -29,16 +31,66 @@ export default function FullPageScroll({ children, showDots = true }: FullPageSc
     currentSection.current = index;
     setActiveSection(index);
 
-    const target = index * window.innerHeight;
-    containerRef.current.scrollTo({
-      top: target,
-      behavior: 'smooth',
-    });
+    // Use actual section element position instead of calculated offset
+    const sections = container.querySelectorAll(':scope > section');
+    const targetSection = sections[index] as HTMLElement;
+    if (targetSection) {
+      container.scrollTo({
+        top: targetSection.offsetTop,
+        behavior: 'smooth',
+      });
+    }
 
     setTimeout(() => {
       isScrolling.current = false;
     }, SCROLL_COOLDOWN);
   }, [sectionCount]);
+
+  // Snap to nearest section after any scroll settles (catches iOS misalignment)
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let snapTimer: ReturnType<typeof setTimeout>;
+
+    const handleScrollEnd = () => {
+      clearTimeout(snapTimer);
+      snapTimer = setTimeout(() => {
+        if (isScrolling.current) return;
+
+        const sections = container.querySelectorAll(':scope > section');
+        const scrollTop = container.scrollTop;
+        let closest = 0;
+        let minDist = Infinity;
+
+        sections.forEach((section, i) => {
+          const el = section as HTMLElement;
+          const dist = Math.abs(el.offsetTop - scrollTop);
+          if (dist < minDist) {
+            minDist = dist;
+            closest = i;
+          }
+        });
+
+        // Only snap if misaligned by more than 5px
+        if (minDist > 5 && closest !== currentSection.current) {
+          currentSection.current = closest;
+          setActiveSection(closest);
+          const target = sections[closest] as HTMLElement;
+          container.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
+        } else if (minDist > 5) {
+          const target = sections[closest] as HTMLElement;
+          container.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
+        }
+      }, 150);
+    };
+
+    container.addEventListener('scroll', handleScrollEnd, { passive: true });
+    return () => {
+      container.removeEventListener('scroll', handleScrollEnd);
+      clearTimeout(snapTimer);
+    };
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -88,12 +140,19 @@ export default function FullPageScroll({ children, showDots = true }: FullPageSc
     };
 
     let touchStartY = 0;
+    let touchStartTime = 0;
     const handleTouchStart = (e: TouchEvent) => {
       touchStartY = e.touches[0].clientY;
+      touchStartTime = Date.now();
     };
     const handleTouchEnd = (e: TouchEvent) => {
       const diff = touchStartY - e.changedTouches[0].clientY;
-      if (Math.abs(diff) > 50) {
+      const elapsed = Date.now() - touchStartTime;
+      // Quick swipe (< 400ms) with enough distance (> 30px)
+      // Or slow drag with larger distance (> 80px)
+      const isQuickSwipe = elapsed < 400 && Math.abs(diff) > 30;
+      const isSlowDrag = Math.abs(diff) > 80;
+      if (isQuickSwipe || isSlowDrag) {
         scrollToSection(currentSection.current + (diff > 0 ? 1 : -1));
       }
     };
@@ -111,6 +170,31 @@ export default function FullPageScroll({ children, showDots = true }: FullPageSc
     };
   }, [scrollToSection, sectionCount]);
 
+  // Re-snap on resize (orientation change, address bar toggle)
+  useEffect(() => {
+    const handleResize = () => {
+      const container = containerRef.current;
+      if (!container) return;
+      const sections = container.querySelectorAll(':scope > section');
+      const target = sections[currentSection.current] as HTMLElement;
+      if (target) {
+        container.scrollTo({ top: target.offsetTop, behavior: 'auto' });
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    // Also handle iOS visual viewport resize (address bar)
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleResize);
+    }
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleResize);
+      }
+    };
+  }, []);
+
   return (
     <>
       <div
@@ -118,14 +202,14 @@ export default function FullPageScroll({ children, showDots = true }: FullPageSc
         className="fixed inset-0 overflow-y-hidden hide-scrollbar"
       >
         {children.map((child, i) => (
-          <section key={i} className="h-screen overflow-hidden">
+          <section key={i} className="h-dvh overflow-hidden">
             {child}
           </section>
         ))}
       </div>
 
       {showDots && (
-        <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3">
+        <div className="fixed right-4 sm:right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3">
           {Array.from({ length: sectionCount }).map((_, i) => (
             <button
               key={i}
