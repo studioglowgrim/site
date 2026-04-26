@@ -17,7 +17,9 @@ export default function ProjectSlider() {
 
   const getCardStep = () => {
     const card = scrollRef.current?.querySelector('.project-card') as HTMLElement;
-    return card ? card.offsetWidth + 24 : 260; // card + gap-6
+    if (!card) return 260;
+    const gap = window.innerWidth < 640 ? 16 : 24;
+    return card.offsetWidth + gap;
   };
 
   const scrollPrev = () => {
@@ -77,23 +79,23 @@ export default function ProjectSlider() {
   return (
     <section
       ref={sectionRef}
-      className={`h-full flex flex-col justify-center py-10 sm:py-20 px-4 sm:px-6 md:px-12 max-w-screen-2xl mx-auto w-full transition-colors ${
+      className={`h-full flex flex-col justify-center py-4 sm:py-10 md:py-20 px-4 sm:px-6 md:px-12 max-w-screen-2xl mx-auto w-full transition-colors ${
         isDark ? 'border-neutral-900' : 'border-neutral-200'
       }`}
     >
-      {/* Header — same pattern as News Update */}
-      <div className="slider-header flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 sm:mb-16">
+      {/* Header */}
+      <div className="slider-header flex items-center justify-between mb-3 sm:mb-8 md:mb-16 pt-12 sm:pt-0">
         <h2
-          className={`text-2xl sm:text-3xl md:text-5xl font-serif transition-colors ${
+          className={`text-lg sm:text-3xl md:text-5xl font-serif transition-colors ${
             isDark ? 'text-white' : 'text-black'
           }`}
         >
           {t.home.selectedWorks}
         </h2>
-        <div className="flex items-center gap-4 sm:gap-6 mt-4 sm:mt-0">
+        <div className="flex items-center gap-3 sm:gap-6">
           <Link
             href="/project"
-            className={`text-xs sm:text-sm uppercase tracking-widest border-b pb-1 transition-colors ${
+            className={`hidden sm:inline text-xs sm:text-sm uppercase tracking-widest border-b pb-1 transition-colors ${
               isDark
                 ? 'border-neutral-600 hover:text-white hover:border-white'
                 : 'border-neutral-400 hover:text-black hover:border-black'
@@ -101,77 +103,79 @@ export default function ProjectSlider() {
           >
             {t.home.viewAllProjects}
           </Link>
-          <div className="flex gap-2">
+          <div className="hidden sm:flex gap-2">
             <button
               onClick={scrollPrev}
-              className={`w-10 h-10 sm:w-12 sm:h-12 border rounded-full flex items-center justify-center transition-colors ${
+              className={`w-10 h-10 md:w-12 md:h-12 border rounded-full flex items-center justify-center transition-colors ${
                 isDark
                   ? 'border-neutral-800 hover:bg-white hover:text-black text-white'
                   : 'border-neutral-300 hover:bg-black hover:text-white text-black'
               }`}
               aria-label="Scroll left"
             >
-              <ChevronLeft size={18} />
+              <ChevronLeft size={16} />
             </button>
             <button
               onClick={scrollNext}
-              className={`w-10 h-10 sm:w-12 sm:h-12 border rounded-full flex items-center justify-center transition-colors ${
+              className={`w-10 h-10 md:w-12 md:h-12 border rounded-full flex items-center justify-center transition-colors ${
                 isDark
                   ? 'border-neutral-800 hover:bg-white hover:text-black text-white'
                   : 'border-neutral-300 hover:bg-black hover:text-white text-black'
               }`}
               aria-label="Scroll right"
             >
-              <ChevronRight size={18} />
+              <ChevronRight size={16} />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Cards — horizontal scroll */}
-      <div
-        ref={scrollRef}
-        className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-4 sm:gap-6 pb-6 px-[20vw] sm:px-0"
-      >
-        {projectsData.map((project) => (
-          <Link
-            key={project.id}
-            href={`/project/${project.slug}`}
-            className="project-card snap-center sm:snap-start shrink-0 group cursor-pointer w-[60vw] sm:w-[clamp(180px,20vw,260px)]"
-          >
-            <div
-              className="relative overflow-hidden rounded-sm"
-              style={{ aspectRatio: '2/3', maxHeight: '55vh' }}
+      {/* Cards — flex-1 fills remaining space */}
+      <div className="flex-1 min-h-0 flex items-center">
+        <div
+          ref={scrollRef}
+          className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-3 sm:gap-6 w-full"
+        >
+          {projectsData.map((project) => (
+            <Link
+              key={project.id}
+              href={`/project/${project.slug}`}
+              className="project-card snap-center sm:snap-start shrink-0 group cursor-pointer w-[65vw] sm:w-[clamp(180px,20vw,260px)]"
             >
-              <Image
-                src={project.posterImage}
-                alt={project.title[locale]}
-                fill
-                className="object-cover transform group-hover:scale-[1.04] transition-transform duration-700 ease-out"
-                sizes="280px"
-              />
-              {/* Hover: bottom gradient + title */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute bottom-0 inset-x-0 p-3 sm:p-4 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                <h3 className="text-white text-sm sm:text-base font-serif leading-tight drop-shadow-lg">
-                  {project.title[locale]}
-                </h3>
-                {project.subtitle[locale] && (
-                  <p className="text-white/60 text-[10px] font-serif italic mt-1">
-                    {project.subtitle[locale]}
-                  </p>
-                )}
+              <div
+                className="relative overflow-hidden rounded-sm h-full"
+                style={{ aspectRatio: '2/3' }}
+              >
+                <Image
+                  src={project.posterImage}
+                  alt={project.title[locale]}
+                  fill
+                  className="object-cover transform group-hover:scale-[1.04] transition-transform duration-700 ease-out"
+                  sizes="(max-width: 640px) 55vw, 260px"
+                />
+                {/* Hover: bottom gradient + title */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute bottom-0 inset-x-0 p-3 sm:p-4 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                  <h3 className="text-white text-sm sm:text-base font-serif leading-tight drop-shadow-lg">
+                    {project.title[locale]}
+                  </h3>
+                  {project.subtitle[locale] && (
+                    <p className="text-white/60 text-[10px] font-serif italic mt-1">
+                      {project.subtitle[locale]}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))}
+        </div>
       </div>
 
       {/* Mobile: View All */}
-      <div className="sm:hidden flex justify-center mt-4">
+      <div className="sm:hidden flex justify-center mt-3">
         <Link
           href="/project"
-          className={`text-xs uppercase tracking-widest border-b pb-1 transition-colors ${
+          className={`text-[10px] uppercase tracking-widest border-b pb-1 transition-colors ${
             isDark
               ? 'border-neutral-600 text-neutral-400 hover:text-white'
               : 'border-neutral-400 text-neutral-500 hover:text-black'
